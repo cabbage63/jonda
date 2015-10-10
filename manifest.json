@@ -7,7 +7,7 @@
         {
             "matches": ["http://qiita.com/*"],
             "js": ["jquery.min.js","script.js"],
-            "run_at": "document_start"
+            "run_at": "document_end"
         }
     ]
 }
