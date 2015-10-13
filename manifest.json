@@ -3,6 +3,7 @@
     "version": "0.0.1",
     "manifest_version": 2,
     "description": "Qiitaでストックした記事が既読かどうか記録する拡張",
+    "permissions": ["storage"],
     "content_scripts": [
         {
             "matches": ["http://qiita.com/*"],
