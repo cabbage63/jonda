@@ -1,31 +1,39 @@
 function save_options() {
-  var color = document.getElementById('color').value;
-  var likesColor = document.getElementById('like').checked;
-  chrome.storage.sync.set({
-    favoriteColor: color,
-    likesColor: likesColor
-  }, function() {
-    // Update status to let user know options were saved.
-    var status = document.getElementById('status');
-    status.textContent = 'Options saved.';
-    setTimeout(function() {
-      status.textContent = '';
-    }, 750);
-  });
+    var color = document.getElementById('color').value;
+    var likesColor = document.getElementById('like').checked;
+    chrome.storage.sync.set({
+        favoriteColor: color,
+        likesColor: likesColor
+    }, function() {
+        // Update status to let user know options were saved.
+        var status = document.getElementById('status');
+        status.textContent = 'Options saved.';
+        setTimeout(function() {
+            status.textContent = '';
+        }, 750);
+    });
 }
 
-// Restores select box and checkbox state using the preferences
-// stored in chrome.storage.
-function restore_options() {
-  // Use default value color = 'red' and likesColor = true.
-  chrome.storage.sync.get({
-    favoriteColor: 'red',
-    likesColor: true
-  }, function(items) {
-    document.getElementById('color').value = items.favoriteColor;
-    document.getElementById('like').checked = items.likesColor;
-  });
+function get_savedinfo() {
+    chrome.storage.local.get(null,
+            function(items) {
+                var keys = Object.keys(items);
+                keys.forEach(
+                        function(value){
+                            var li = document.createElement('li');
+                            li.innerText = value + "(" + items[value] + ")";
+                            document.getElementById('list').appendChild(li);
+                        }
+                        );
+            });
 }
-document.addEventListener('DOMContentLoaded', restore_options);
-document.getElementById('save').addEventListener('click',
-    save_options);
+
+function hoge(){
+    var div = document.createElement('div');
+    div.innerText = "hogehoge";
+    document.getElementById('oya').appendChild(div);
+}
+
+document.addEventListener('DOMContentLoaded', get_savedinfo);
+document.getElementById('save').addEventListener('click', save_options);
+document.getElementById('test').addEventListener('click', hoge);
