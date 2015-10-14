@@ -13,19 +13,21 @@ if( arrayOfUrl.indexOf('stock') != -1 ){
     console.log('stockpage!');
 }
 
-initList();
 
-function initList(){
+init_list();
+
+function init_list(){
     //ストックした記事毎に解析
     var articleVar = $('article');
     var articleLength = articleVar.length;
     var articleIds = [];
+
     console.log(articleVar.length);
     $.each(articleVar,
             function(idx, article){
                 //console.log('[' + idx + ']' + article);
                 //要素追加
-                $(this).find('ul.publicItem_statusList').append(addButton(true,idx));
+                $(this).find('ul.publicItem_statusList').append(add_button(false,idx));
 
                 //ボタンにイベント追加
                 (function(){
@@ -33,12 +35,9 @@ function initList(){
                     var button = $("#itembt"+num+" button");
                     var txt = "";
                     button.click(function(){
-                        if(button.hasClass('isRead')){
-                            txt = "既読";
-                        }else{
-                            txt = "未読";
-                        }
-                        button.toggleClass('btn-success btn-default isRead').text(txt);
+                        button.toggleClass('isRead');
+                        set_button_status(button, button.hasClass('isRead'));
+                        save_status(articleIds[num], button.hasClass('isRead'));
                     });
                 })();
 
@@ -46,50 +45,74 @@ function initList(){
                 articleIds.push($(this).data('uuid'));
             }
     );
+    restore_status(articleIds);
+}
 
-    console.log(articleIds);
+function set_button_status(button, isRead){
+    var txt;
+    var clsOn,clsOff;
+    if(isRead){
+        txt = "既読";
+        clsOn = "btn-success isRead";
+        clsOff = "btn-default";
+    }else{
+        txt = "未読";
+        clsOff = "btn-success isRead";
+        clsOn = "btn-default";
+    }
+    button.toggleClass(clsOn,true).toggleClass(clsOff,false).text(txt);
 }
 
 
 //未読・既読に応じてタグを挿入
-function addButton(isRead, idx){
+function add_button(isRead, idx){
     if(isRead){
-        return '<li id="itembt' + idx + '" class="publicItem_isRead"><button class="btn btn-success">既読</button></li>'
+        return '<li id="itembt' + idx + '" class="publicItem_isRead"><button class="btn btn-success isRead">既読</button></li>'
     }else{
         return '<li id="itembt' + idx + '" class="publicItem_isRead"><button class="btn btn-default">未読</button></li>'
     }
 }
 
-/*
-function save_options() {
-    var color = document.getElementById('color').value;
-    var likesColor = document.getElementById('like').checked;
-    chrome.storage.sync.set({
-        favoriteColor: color,
-        likesColor: likesColor
-    }, function() {
-        // Update status to let user know options were saved.
-        var status = document.getElementById('status');
-        status.textContent = 'Options saved.';
-        setTimeout(function() {
-            status.textContent = '';
-        }, 750);
-    });
+
+function save_status(uuid, isRead) {
+    var val = {uuid:true}
+    val[uuid] = isRead;
+    chrome.storage.local.set(val
+            , function() {
+                if(chrome.extension.lastError !== undefined){
+                    alert("error!");
+                }else{
+                    // Update status to let user know options were saved.
+                    alert("saved status as " + isRead + "(key:" + uuid + ")");
+                }
+            });
 }
 
-// Restores select box and checkbox state using the preferences
-// stored in chrome.storage.
-function restore_options(idList) {
-    // Use default value color = 'red' and likesColor = true.
-    chrome.storage.sync.get({
-        favoriteColor: 'red',
-        likesColor: true
-    }, function(items) {
-        document.getElementById('color').value = items.favoriteColor;
-        document.getElementById('like').checked = items.likesColor;
-    });
+//ボタンに状態を付与する
+function restore_status(idList) {
+    chrome.storage.local.get(idList,
+            function(items) {
+                var itemLen = Object.keys(items).length;
+                var button; 
+                for(i=0; i<itemLen; i++){
+                    button = $("#itembt"+ i +" button");
+                    set_button_status(button, items[idList[i]]);
+                }
+                if(chrome.extension.lastError !== undefined){
+                    alert('error!');
+                }
+            });
 }
-document.addEventListener('DOMContentLoaded', restore_options);
-document.getElementById('save').addEventListener('click',
-        save_options);
-        */
+
+//デバッグ用
+chrome.storage.onChanged.addListener(function(changes, namespace) {
+    for (key in changes) {
+        var storageChange = changes[key];
+        console.log('Storage key "%s" in namespace "%s" changed. ' +
+                'Old value was "%s", new value is "%s".',
+                key,
+                namespace,
+                storageChange.oldValue,
+                storageChange.newValue);
+    }
+});
