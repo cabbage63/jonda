@@ -79,12 +79,6 @@ function save_status(uuid, isRead) {
     val[uuid] = isRead;
     chrome.storage.local.set(val
             , function() {
-                if(chrome.extension.lastError !== undefined){
-                    alert("error!");
-                }else{
-                    // Update status to let user know options were saved.
-                    alert("saved status as " + isRead + "(key:" + uuid + ")");
-                }
             });
 }
 
