@@ -92,11 +92,12 @@ function save_status(uuid, isRead) {
 function restore_status(idList) {
     chrome.storage.local.get(idList,
             function(items) {
-                var itemLen = Object.keys(items).length;
+                var itemKeys = Object.keys(items);
+                var itemLen = itemKeys.length;
                 var button; 
                 for(i=0; i<itemLen; i++){
-                    button = $("#itembt"+ i +" button");
-                    set_button_status(button, items[idList[i]]);
+                    button = $('article[data-uuid = ' + itemKeys[i] + '] button');
+                    set_button_status(button, items[itemKeys[i]]);
                 }
                 if(chrome.extension.lastError !== undefined){
                     alert('error!');
