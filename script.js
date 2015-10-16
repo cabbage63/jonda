@@ -1,32 +1,31 @@
 //URL毎に処理を分岐
 var url = location.href;
-console.log('現在のURL：' + url);
-
 var arrayOfUrl = url.split('/');
 var len = arrayOfUrl.length;
-for(i=0; i<len; i++){
-    console.log('arrayOfUrl['+i+']: '+ arrayOfUrl[i]);
-}
+
+/*for debug
+  for(i=0; i<len; i++){
+  console.log('arrayOfUrl['+i+']: '+ arrayOfUrl[i]);
+  }
+  */
 
 if( arrayOfUrl.indexOf('stock') == 4 && len == 5 ){
-    console.log('userstockpage!');
     init_stocklist();
 }else if( arrayOfUrl.indexOf('items') != -1 && len == 6 ){
-    console.log('article page now!');
-    init_article();
+    if( $('span.itemStockButton').hasClass('stocked') ){
+        init_article();
+    }
 }
 
-
+//ストック一覧の初期化処理
 function init_stocklist(){
     //ストックした記事毎に解析
     var articleVar = $('article');
     var articleLength = articleVar.length;
     var articleIds = [];
 
-    console.log(articleVar.length);
     $.each(articleVar,
             function(idx, article){
-                //console.log('[' + idx + ']' + article);
                 //要素追加
                 $(this).find('ul.publicItem_statusList').append(add_button_to_stocklist(false,idx));
 
@@ -45,10 +44,11 @@ function init_stocklist(){
                 //記事IDを取得
                 articleIds.push($(this).data('uuid'));
             }
-    );
+          );
     restore_status_stocklist(articleIds);
 }
 
+//記事ページの初期化処理
 function init_article(){
     //要素追加
     $('div.itemsShowHeaderStock').append('<button class="btn btn-default btn-block isReadButton">未読</button>');
@@ -58,9 +58,7 @@ function init_article(){
     //ボタンにイベント追加
     (function(){
         var button = $('div.itemsShowHeaderStock button.isReadButton');
-        console.log(button);
         button.click(function(){
-            console.log('pushed');
             button.toggleClass('isRead');
             set_button_status_article(button, button.hasClass('isRead'));
             save_status(arrayOfUrl[5], button.hasClass('isRead'));
@@ -69,6 +67,7 @@ function init_article(){
 
 }
 
+//ストック一覧のボタンの状態変更
 function set_button_status_stocklist(button, isRead){
     var txt;
     var clsOn,clsOff;
@@ -84,6 +83,7 @@ function set_button_status_stocklist(button, isRead){
     button.toggleClass(clsOn,true).toggleClass(clsOff,false).text(txt);
 }
 
+//記事ページのボタンの状態変更
 function set_button_status_article(button, isRead){
     var txt;
     var clsOn,clsOff;
@@ -132,10 +132,11 @@ function restore_status_stocklist(idList) {
             });
 }
 
+//記事ページのボタン状態をストレージから呼び出す
 function restore_status_article(id){
     chrome.storage.local.get(id,
             function(items) {
-                    set_button_status_article($('div.itemsShowHeaderStock button.isReadButton'), items[id]);
+                set_button_status_article($('div.itemsShowHeaderStock button.isReadButton'), items[id]);
             });
 }
 
