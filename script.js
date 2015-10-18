@@ -8,14 +8,18 @@ var len = arrayOfUrl.length;
   console.log('arrayOfUrl['+i+']: '+ arrayOfUrl[i]);
   }
   */
-
-if( arrayOfUrl.indexOf('stock') == 4 && len == 5 ){
-    init_stocklist();
-}else if( arrayOfUrl.indexOf('items') != -1 && len == 6 ){
-    if( $('span.itemStockButton').hasClass('stocked') ){
-        init_article();
-    }
-}
+chrome.storage.sync.get(["area", "username"],
+        function(items) {
+            if( arrayOfUrl.indexOf('stock') == 4 && len == 5 ){
+                if( items["area"] === "all" || arrayOfUrl[3] === items["username"]){
+                    init_stocklist();
+                }
+            }else if( arrayOfUrl.indexOf('items') != -1 && len == 6 ){
+                if( items["area"] === "all" || $('span.itemStockButton').hasClass('stocked') ){
+                    init_article();
+                }
+            }
+        });
 
 //ストック一覧の初期化処理
 function init_stocklist(){

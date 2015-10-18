@@ -1,42 +1,35 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>My Test Extension Options</title>
+        <title>Options | Jonda</title>
         <style>
 body: { padding: 10px; }
         </style>
     </head>
 
     <body>
-        Favorite color:
-        <select id="color">
-            <option value="red">red</option>
-            <option value="green">green</option>
-            <option value="blue">blue</option>
-            <option value="yellow">yellow</option>
+        <h1>オプション</h1>
+        <h2>管理範囲</h2>
+        <select id="area" onChange="activate()">
+            <option value="all">すべてのユーザのストック</option>
+            <option value="user">特定のユーザのストック</option>
         </select>
+        <br>
 
         <label>
-            <input type="checkbox" id="like">
-            I like colors.
+            ユーザ名:
+            <input type="text" id="username">
         </label>
 
         <div id="status"></div>
-        <button id="save">Save</button>
+        <button id="save">保存</button>
 
-        <ul id="list">
-            <li>hoge</li>
+        <h2>保存しているデータ</h2>
+        <button id="showAll">すべて表示</button>
+        <ul id="list" hidden="hidden">
         </ul>
 
-        <button id="test">test</button>
-
-        <div id="oya">hoge</div>
-
-        <dl>
-            <dt>test</dt>
-            <dd>hoge</dd>
-        </dl>
-
+        <script src="jquery.min.js"></script>
         <script src="options.js"></script>
     </body>
 </html>

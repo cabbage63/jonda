@@ -1,39 +1,59 @@
 function save_options() {
-    var color = document.getElementById('color').value;
-    var likesColor = document.getElementById('like').checked;
+    var area = $('#area').val();
+    var username = $('#username').val();
     chrome.storage.sync.set({
-        favoriteColor: color,
-        likesColor: likesColor
+        area: area,
+        username: username
     }, function() {
         // Update status to let user know options were saved.
-        var status = document.getElementById('status');
-        status.textContent = 'Options saved.';
+        var status = $('#status');
+        status.text('オプションを保存しました。');
         setTimeout(function() {
-            status.textContent = '';
+            status.text('');
         }, 750);
     });
 }
 
-function get_savedinfo() {
+function restore_options(){
+    chrome.storage.sync.get(["area", "username"],
+            function(items){
+                $('#area').val(items.area);
+                $('#username').val(items.username);
+                activate();
+            });
+
     chrome.storage.local.get(null,
             function(items) {
                 var keys = Object.keys(items);
                 keys.forEach(
                         function(value){
-                            var li = document.createElement('li');
-                            li.innerText = value + "(" + items[value] + ")";
-                            document.getElementById('list').appendChild(li);
+                            var li = $('<li>' + value + "(" + items[value] + ")" + '</li>');
+                            $('#list').append(li);
                         }
                         );
             });
 }
 
-function hoge(){
-    var div = document.createElement('div');
-    div.innerText = "hogehoge";
-    document.getElementById('oya').appendChild(div);
+function get_savedinfo() {
+    var list = $('#list');
+    if( list.attr("hidden") == "hidden" ){
+        list.removeAttr("hidden");
+        $('#showAll').text("閉じる");
+    }else{
+        list.attr("hidden", "hidden");
+        $('#showAll').text("すべて表示");
+    }
 }
 
-document.addEventListener('DOMContentLoaded', get_savedinfo);
+function activate(){
+    if( $('#area').val() == "user"){
+       $('#username').removeAttr("disabled");
+    }else{
+       $('#username').attr("disabled", "disabled"); 
+    }
+}
+
+document.getElementById('area').addEventListener('change', activate);
 document.getElementById('save').addEventListener('click', save_options);
-document.getElementById('test').addEventListener('click', hoge);
+document.getElementById('showAll').addEventListener('click', get_savedinfo);
+document.addEventListener('DOMContentLoaded', restore_options);
