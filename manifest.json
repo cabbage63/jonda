@@ -1,6 +1,6 @@
 {
     "name": "Jonda -Qiita既読管理-",
-    "version": "1.0",
+    "version": "1.1",
     "manifest_version": 2,
 
     "description": "Qiitaでストックした記事が既読かどうか記録する拡張",
@@ -9,6 +9,7 @@
         "128": "image/icon128.png"
     },
 
+    "short_name": "Jonda",
     "author": "cabbage",
     "homepage_url": "https://github.com/cabbage63",
 
