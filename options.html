@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Options | Jonda</title>
+        <link rel="stylesheet" type="text/css" href="css/option.css">
+    </head>
+
+    <body>
+        <div class="developer">
+            <h1>製作者</h1>
+            <img class="icon" src="image/logo80x80.png" alt="cabbage">
+            <div class="profile lev1"> 
+                <h2 class="name">cabbage</h2>
+                <div class="lev2">
+                    twitter:<a href="https://twitter.com/cab_kyabe">@cab_kyabe</a><br>
+                    github:<a href="https://github.com/cabbage63">cabbage63</a><br>
+                    blog:<a href="http://cabbalog.blogspot.jp/">きゃべログ</a><br>
+                    qiita:<a href="http://qiita.com/cabbage">cabbage</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="option">
+            <h1>オプション</h1>
+            <div class="lev1">
+                <h2>管理範囲</h2>
+                <div class="lev2">
+                    <select id="area" onChange="activate()">
+                        <option value="all">すべてのユーザのストック</option>
+                        <option value="user">特定のユーザのストック</option>
+                    </select>
+                    <br>
+
+                    <label id="labUsername">
+                        ユーザ名:
+                        <input type="text" id="username">
+                    </label>
+
+                    <label id="labSearch">
+                        <input type="checkbox" id="search">
+                        検索結果にもボタンを表示する
+                    </label>
+
+                    <div id="status"></div>
+                    <button id="save">保存</button>
+                </div>
+
+                <h2 class="saved">保存しているデータ</h2>
+                <div class="lev2">
+                    <button id="showAll">すべて表示</button>
+                    <ul id="list" hidden="hidden">
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <script src="jquery.min.js"></script>
+        <script src="options.js"></script>
+    </body>
+</html>

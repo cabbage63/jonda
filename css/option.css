@@ -1,0 +1,39 @@
+body: { padding: 10px; }
+img.icon{
+    display: block;
+    float: left;
+}
+h1{
+    border-left: 10px solid #59bb0c;
+    border-bottom: 1px solid #59bb0c;
+    font-size: 130%; 
+    padding: 5px 10px;
+}
+h2{
+    border-left: 5px solid #59bb0c;
+    font-size: 130%; 
+    padding: 5px 10px;
+}
+h2.name{
+    border: none;
+    padding: 0px;
+}
+div.lev1{
+    margin-left: 10px;
+}
+div.lev2{
+    margin-left: 15px; 
+}
+div.profile{
+    margin-left: 100px;
+}
+div.option{
+    margin-top: 35px;
+    clear:both;
+}
+select, label, button, div#status{
+    margin: 5px 0;
+}
+div.option h2.saved{
+    margin-top: 20px;
+}
