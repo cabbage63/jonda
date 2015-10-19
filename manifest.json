@@ -4,6 +4,7 @@
     "manifest_version": 2,
     "description": "Qiitaでストックした記事が既読かどうか記録する拡張",
     "permissions": ["storage","tabs"],
+    "web_accessible_resources": ["css/search.css"],
     "options_ui": {
         "page": "options.html",
         "chrome_style": true

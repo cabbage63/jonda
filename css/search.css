@@ -1,0 +1,12 @@
+@media screen and (max-width: 767px){
+    .searchResult {
+        padding: 15px 0 50px;
+    }
+
+    .searchResult_sub {
+        top: auto;
+        right: auto;
+        bottom: 0px;
+        left: 52px;
+    }
+}

@@ -1,9 +1,11 @@
 function save_options() {
     var area = $('#area').val();
     var username = $('#username').val();
+    var search = $('#search').prop('checked');
     chrome.storage.sync.set({
         area: area,
-        username: username
+        username: username,
+        search: search 
     }, function() {
         // Update status to let user know options were saved.
         var status = $('#status');
@@ -15,10 +17,11 @@ function save_options() {
 }
 
 function restore_options(){
-    chrome.storage.sync.get(["area", "username"],
+    chrome.storage.sync.get(["area", "username", "search"],
             function(items){
                 $('#area').val(items.area);
                 $('#username').val(items.username);
+                $('#search').prop('checked',items.search);
                 activate();
             });
 
@@ -47,9 +50,11 @@ function get_savedinfo() {
 
 function activate(){
     if( $('#area').val() == "user"){
-       $('#username').removeAttr("disabled");
+       $('#labUsername').removeAttr("hidden");
+       $('#labSearch').attr("hidden", "hidden");
     }else{
-       $('#username').attr("disabled", "disabled"); 
+       $('#labUsername').attr("hidden", "hidden"); 
+       $('#labSearch').removeAttr("hidden");
     }
 }
 
