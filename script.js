@@ -7,15 +7,15 @@ var len = arrayOfUrl.length;
 chrome.storage.sync.get(["area", "username", "search"],
         function(items) {
             if( len == 5 && arrayOfUrl[4].indexOf('stock') != -1 ){
-                if( items["area"] === "all" || arrayOfUrl[3] === items["username"]){
+                if( items["area"] === "all" || arrayOfUrl[3] === items["username"] || items["area"] === undefined ){
                     init_stocklist();
                 }
             }else if( len == 6 && arrayOfUrl[4].indexOf('items') != -1 ){
-                if( items["area"] === "all" || $('span.itemStockButton').hasClass('stocked') ){
+                if( items["area"] === "all" || $('span.itemStockButton').hasClass('stocked') || items["area"] === undefined ){
                     init_article();
                 }
             }else if( len == 4 && arrayOfUrl[3].indexOf("search") != -1 ){
-                if( items["search"] ){
+                if( items["search"] || items["area"] === undefined ){
                     init_search();
                 }
             }

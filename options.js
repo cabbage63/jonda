@@ -20,6 +20,9 @@ function restore_options(){
     chrome.storage.sync.get(["area", "username", "search"],
             function(items){
                 $('#area').val(items.area);
+                if(items.area === undefined){
+                    $('#area').val("all");
+                }
                 $('#username').val(items.username);
                 $('#search').prop('checked',items.search);
                 activate();
